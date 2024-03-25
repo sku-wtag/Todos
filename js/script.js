@@ -39,15 +39,12 @@ const generateTask = (task) => {
     return $listElement;
 }
 
-
-
 const renderTasks = (taskContiner, tasks) => {
     tasks.map((task) => {
         let element = generateTask(task)
         taskContiner.appendChild(element)
     })
 }
-
 
 const addTask = () => {
 
