@@ -64,7 +64,7 @@ const addTask = () => {
 
 const toogleButton = () => {
     if (!isFormOpen) {
-        $createButton.innerText = 'Hide'
+        $createButton.innerText = 'Hide form'
         isFormOpen = true
     }
     else {
@@ -74,7 +74,6 @@ const toogleButton = () => {
 }
 
 const renderListWithForm = (tasks) => {
-
     let form = makeForm();
     $taskContainer.innerHTML = ''
     $taskContainer.appendChild(form)
