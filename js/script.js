@@ -29,7 +29,7 @@ const createForm = (taskInfo = {}) => {
 };
 
 const createTask = (task) => {
-  let $listElement = document.createElement("li");
+  const $listElement = document.createElement("li");
   $listElement.setAttribute("id", task.id);
   $listElement.innerText = task.title;
   return $listElement;
@@ -37,14 +37,14 @@ const createTask = (task) => {
 
 const renderTasks = (taskContiner, tasks) => {
   tasks.map((task) => {
-    let element = createTask(task);
+    const element = createTask(task);
     taskContiner.appendChild(element);
   });
 };
 
 const addTaskHandler = () => {
-  let $title = document.getElementById("title");
-  let titleValue = sanitizeInput($title.value);
+  const $title = document.getElementById("title");
+  const titleValue = sanitizeInput($title.value);
 
   if (titleValue.length) {
     tasks.push({
@@ -69,7 +69,7 @@ const toogleButton = () => {
 const render = (tasks) => {
   $taskContainer.innerHTML = "";
   if (isFormOpen) {
-    let form = createForm();
+    const form = createForm();
     $taskContainer.appendChild(form);
     renderTasks($taskContainer, tasks);
     return;
