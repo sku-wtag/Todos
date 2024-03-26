@@ -29,9 +29,19 @@ const createForm = (taskInfo = {}) => {
 };
 
 const createTask = (task) => {
-  let $listElement = document.createElement("li");
+  const $listElement = document.createElement("li");
+  const $textContainer = document.createElement("span");
+  const $deleteButton = document.createElement("button");
+
   $listElement.setAttribute("id", task.id);
-  $listElement.innerText = task.title;
+  $deleteButton.setAttribute("id", `btn-${task.id}`);
+
+  $deleteButton.addEventListener("click", () => deleteTaskHandler(task.id));
+
+  $textContainer.innerText = task.title;
+  $deleteButton.innerText = "Delete";
+
+  $listElement.append($textContainer, $deleteButton);
   return $listElement;
 };
 
@@ -42,9 +52,15 @@ const renderTasks = (taskContiner, tasks) => {
   });
 };
 
+const deleteTaskHandler = (taskId) => {
+  taskId = parseInt(taskId);
+  tasks = tasks.filter((task) => taskId != task.id);
+  render(tasks);
+};
+
 const addTaskHandler = () => {
-  let $title = document.getElementById("title");
-  let titleValue = sanitizeInput($title.value);
+  const $title = document.getElementById("title");
+  const titleValue = sanitizeInput($title.value);
 
   if (titleValue.length) {
     tasks.push({
