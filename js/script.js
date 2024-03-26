@@ -7,7 +7,7 @@ import {
 let isFormOpen = false
 let tasks = []
 
-const getUniqueId = () => `element-${Date.now()}`;
+const getUniqueId = () => Date.now();
 
 const makeForm = (taskInfo = {}) => {
     let $form = document.createElement('li')
@@ -34,8 +34,7 @@ const makeForm = (taskInfo = {}) => {
 const generateTask = (task) => {
     let $listElement = document.createElement('li');
     $listElement.setAttribute('id', task.id);
-    $listElement.textContent = task.title;
-
+    $listElement.innerText = task.title;
     return $listElement;
 }
 
@@ -47,21 +46,21 @@ const renderTasks = (taskContiner, tasks) => {
 }
 
 const addTask = () => {
-
     let $title = document.getElementById('title')
-    let titleValue = $title.value.trim();
+    let titleValue = $title?.value?.trim();
+    
     if (titleValue.length) {
         tasks.push({
             id: getUniqueId(),
             title: titleValue
         })
-        renderListWithForm(tasks)
+        render(tasks)
     }
 }
 
 const toogleButton = () => {
     if (!isFormOpen) {
-        $createButton.innerText = 'Hide'
+        $createButton.innerText = 'Hide form'
         isFormOpen = true
     }
     else {
@@ -71,7 +70,6 @@ const toogleButton = () => {
 }
 
 const renderListWithForm = (tasks) => {
-
     let form = makeForm();
     $taskContainer.innerHTML = ''
     $taskContainer.appendChild(form)
@@ -83,16 +81,18 @@ const renderListWithoutForm = (tasks) => {
     renderTasks($taskContainer, tasks);
 }
 
-const showForm = () => {
-
-    if (!isFormOpen) {
+const render = (tasks) =>{
+    if (isFormOpen) {
         renderListWithForm(tasks)
-        toogleButton();
     }
     else {
         renderListWithoutForm(tasks);
-        toogleButton();
     }
+}
+
+const showForm = () => {
+    toogleButton();
+    render(tasks);
 }
 
 $createButton.addEventListener('click', showForm)
