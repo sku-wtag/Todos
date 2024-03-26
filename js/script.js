@@ -1,98 +1,85 @@
+import { $createButton, $taskContainer } from "./element.js";
+import { sanitizeInput } from "./utlity.js";
 
-import {
-    $createButton,
-    $taskContainer
-} from './element.js'
-
-let isFormOpen = false
-let tasks = []
+let isFormOpen = false;
+let tasks = [];
 
 const getUniqueId = () => Date.now();
 
-const makeForm = (taskInfo = {}) => {
-    let $form = document.createElement('li')
-    let $title = document.createElement('input');
-    let $addButton = document.createElement('button')
+const createForm = (taskInfo = {}) => {
+  const $liElement = document.createElement("li");
+  const $inputElement = document.createElement("input");
+  const $addButton = document.createElement("button");
 
-    $addButton.innerHTML = "Add"
-    $title.setAttribute('name', 'title');
-    $title.setAttribute('placeholder', "Enter your task name")
-    $title.setAttribute('id', 'title')
-    $addButton.setAttribute('id', 'add-task')
-    $addButton.addEventListener('click', () => addTask())
+  $addButton.innerHTML = "Add";
+  $inputElement.setAttribute("name", "title");
+  $inputElement.setAttribute("placeholder", "Enter your task name");
+  $inputElement.setAttribute("id", "title");
+  $addButton.setAttribute("id", "add-task");
+  $addButton.addEventListener("click", () => addTaskHandler());
 
-    if (taskInfo.title) {
-        $title.value = taskInfo.title
-    }
+  if (taskInfo.title) {
+    $title.value = taskInfo.title;
+  }
 
-    $form.appendChild($title);
-    $form.appendChild($addButton)
+  $liElement.appendChild($inputElement);
+  $liElement.appendChild($addButton);
 
-    return $form
-}
+  return $liElement;
+};
 
-const generateTask = (task) => {
-    let $listElement = document.createElement('li');
-    $listElement.setAttribute('id', task.id);
-    $listElement.innerText = task.title;
-    return $listElement;
-}
+const createTask = (task) => {
+  let $listElement = document.createElement("li");
+  $listElement.setAttribute("id", task.id);
+  $listElement.innerText = task.title;
+  return $listElement;
+};
 
 const renderTasks = (taskContiner, tasks) => {
-    tasks.map((task) => {
-        let element = generateTask(task)
-        taskContiner.appendChild(element)
-    })
-}
+  tasks.map((task) => {
+    let element = createTask(task);
+    taskContiner.appendChild(element);
+  });
+};
 
-const addTask = () => {
-    let $title = document.getElementById('title')
-    let titleValue = $title?.value?.trim();
-    
-    if (titleValue.length) {
-        tasks.push({
-            id: getUniqueId(),
-            title: titleValue
-        })
-        render(tasks)
-    }
-}
+const addTaskHandler = () => {
+  let $title = document.getElementById("title");
+  let titleValue = sanitizeInput($title.value);
+
+  if (titleValue.length) {
+    tasks.push({
+      id: getUniqueId(),
+      title: titleValue,
+    });
+    render(tasks);
+  }
+};
 
 const toogleButton = () => {
-    if (!isFormOpen) {
-        $createButton.innerText = 'Hide form'
-        isFormOpen = true
-    }
-    else {
-        $createButton.innerText = 'Create'
-        isFormOpen = false
-    }
-}
+  if (!isFormOpen) {
+    $createButton.innerText = "Hide form";
+    isFormOpen = true;
+    return;
+  }
 
-const renderListWithForm = (tasks) => {
-    let form = makeForm();
-    $taskContainer.innerHTML = ''
-    $taskContainer.appendChild(form)
+  $createButton.innerText = "Create";
+  isFormOpen = false;
+};
+
+const render = (tasks) => {
+  $taskContainer.innerHTML = "";
+  if (isFormOpen) {
+    let form = createForm();
+    $taskContainer.appendChild(form);
     renderTasks($taskContainer, tasks);
-}
-
-const renderListWithoutForm = (tasks) => {
-    $taskContainer.innerHTML = ''
-    renderTasks($taskContainer, tasks);
-}
-
-const render = (tasks) =>{
-    if (isFormOpen) {
-        renderListWithForm(tasks)
-    }
-    else {
-        renderListWithoutForm(tasks);
-    }
-}
+    return;
+  }
+  renderTasks($taskContainer, tasks);
+};
 
 const showForm = () => {
-    toogleButton();
-    render(tasks);
-}
+  toogleButton();
+  render(tasks);
+};
 
-$createButton.addEventListener('click', showForm)
+$createButton.addEventListener("click", showForm);
