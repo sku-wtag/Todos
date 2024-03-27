@@ -98,12 +98,12 @@ const updateTaskHandler = (taskId) => {
 };
 
 const editTaskHandler = (taskId) => {
-  let taskItem;
   tasks.forEach((task) => {
     task.mode = READ;
-    if (task.id === taskId) taskItem = task;
+    if (task.id === taskId) {
+      task.mode = EDIT;
+    }
   });
-  taskItem.mode = EDIT;
   render();
 };
 
