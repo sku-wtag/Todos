@@ -1,6 +1,6 @@
 import { $createButton, $taskContainer } from "./element.js";
 import { sanitizeInput, getUniqueId } from "./utlity.js";
-import { READ, EDIT, ALL } from "./const.js";
+import { READ, EDIT } from "./const.js";
 
 let isFormOpen = false;
 let tasks = [];
@@ -66,7 +66,7 @@ const createTaskElement = (task) => {
     $editButton.innerText = "Edit";
 
     $listElement.append($textContainer, $editButton, $deleteButton);
-  } else if (task.mode == EDIT) {
+  } else {
     editForm($listElement, task);
   }
 
