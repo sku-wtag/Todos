@@ -1,8 +1,32 @@
 import { $createButton, $taskContainer } from "./element.js";
 import { sanitizeInput, getUniqueId } from "./utlity.js";
+import { READ, EDIT } from "./const.js";
 
 let isFormOpen = false;
 let tasks = [];
+
+const editForm = (liElement, task) => {
+  const $inputElement = document.createElement("input");
+  const $updateButton = document.createElement("button");
+  const $cancelButton = document.createElement("button");
+  const $deleteButton = document.createElement("button");
+
+  $inputElement.setAttribute("id", `input-${task.id}`);
+
+  $inputElement.value = task.title;
+
+  $deleteButton.innerText = "Delete";
+  $updateButton.innerHTML = "Update";
+  $cancelButton.innerHTML = "Cancel";
+
+  $deleteButton.addEventListener("click", () => deleteTaskHandler(task.id));
+  $updateButton.addEventListener("click", () => updateTaskHandler(task.id));
+  $cancelButton.addEventListener("click", () => calcelTaskHandler(task.id));
+
+  liElement.append($inputElement, $updateButton, $deleteButton, $cancelButton);
+
+  return liElement;
+};
 
 const createForm = (taskInfo = {}) => {
   const $liElement = document.createElement("li");
@@ -28,16 +52,24 @@ const createForm = (taskInfo = {}) => {
 
 const createTaskElement = (task) => {
   const $listElement = document.createElement("li");
-  const $textContainer = document.createElement("span");
-  const $deleteButton = document.createElement("button");
-  $listElement.setAttribute("id", task.id);
 
-  $deleteButton.addEventListener("click", () => deleteTaskHandler(task.id));
+  if (task.mode == READ) {
+    const $textContainer = document.createElement("span");
+    const $editButton = document.createElement("button");
+    const $deleteButton = document.createElement("button");
 
-  $textContainer.innerText = task.title;
-  $deleteButton.innerText = "Delete";
+    $editButton.addEventListener("click", () => editTaskHandler(task.id));
+    $deleteButton.addEventListener("click", () => deleteTaskHandler(task.id));
 
-  $listElement.append($textContainer, $deleteButton);
+    $deleteButton.innerText = "Delete";
+    $textContainer.innerText = task.title;
+    $editButton.innerText = "Edit";
+
+    $listElement.append($textContainer, $editButton, $deleteButton);
+  } else {
+    editForm($listElement, task);
+  }
+
   return $listElement;
 };
 
@@ -54,6 +86,33 @@ const deleteTaskHandler = (taskId) => {
   render();
 };
 
+const updateTaskHandler = (taskId) => {
+  const $inputElement = document.getElementById(`input-${taskId}`);
+  const inputValue = sanitizeInput($inputElement.value);
+  let task = tasks.find((task) => task.id === taskId);
+  if (inputValue.length > 0) {
+    task.title = inputValue;
+    task.mode = READ;
+    render();
+  }
+};
+
+const editTaskHandler = (taskId) => {
+  tasks.forEach((task) => {
+    task.mode = READ;
+    if (task.id === taskId) {
+      task.mode = EDIT;
+    }
+  });
+  render();
+};
+
+const calcelTaskHandler = (taskId) => {
+  let task = tasks.find((task) => task.id === taskId);
+  task.mode = READ;
+  render();
+};
+
 const addTaskHandler = () => {
   const $title = document.getElementById("title");
   const titleValue = sanitizeInput($title.value);
@@ -62,6 +121,7 @@ const addTaskHandler = () => {
     tasks.push({
       id: getUniqueId(),
       title: titleValue,
+      mode: READ,
     });
     render();
   }
