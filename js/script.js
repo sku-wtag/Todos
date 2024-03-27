@@ -1,10 +1,8 @@
 import { $createButton, $taskContainer } from "./element.js";
-import { sanitizeInput } from "./utlity.js";
+import { sanitizeInput, getUniqueId } from "./utlity.js";
 
 let isFormOpen = false;
 let tasks = [];
-
-const getUniqueId = () => Date.now();
 
 const createForm = (taskInfo = {}) => {
   const $liElement = document.createElement("li");
@@ -51,7 +49,7 @@ const addTaskHandler = () => {
       id: getUniqueId(),
       title: titleValue,
     });
-    render(tasks);
+    render();
   }
 };
 
@@ -66,7 +64,7 @@ const toogleButton = () => {
   isFormOpen = false;
 };
 
-const render = (tasks) => {
+const render = () => {
   $taskContainer.innerHTML = "";
   if (isFormOpen) {
     const form = createForm();
@@ -77,7 +75,7 @@ const render = (tasks) => {
 
 const showForm = () => {
   toogleButton();
-  render(tasks);
+  render();
 };
 
 $createButton.addEventListener("click", showForm);
