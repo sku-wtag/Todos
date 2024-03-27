@@ -28,16 +28,16 @@ const createForm = (taskInfo = {}) => {
   return $liElement;
 };
 
-const createTask = (task) => {
+const createTaskElement = (task) => {
   const $listElement = document.createElement("li");
   $listElement.setAttribute("id", task.id);
   $listElement.innerText = task.title;
   return $listElement;
 };
 
-const renderTasks = (taskContiner, tasks) => {
+const createTasks = (taskContiner, tasks) => {
   tasks.map((task) => {
-    const element = createTask(task);
+    const element = createTaskElement(task);
     taskContiner.appendChild(element);
   });
 };
@@ -71,10 +71,8 @@ const render = (tasks) => {
   if (isFormOpen) {
     const form = createForm();
     $taskContainer.appendChild(form);
-    renderTasks($taskContainer, tasks);
-    return;
   }
-  renderTasks($taskContainer, tasks);
+  createTasks($taskContainer, tasks);
 };
 
 const showForm = () => {
