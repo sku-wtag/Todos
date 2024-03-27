@@ -31,7 +31,6 @@ const createTaskElement = (task) => {
   const $textContainer = document.createElement("span");
   const $deleteButton = document.createElement("button");
   $listElement.setAttribute("id", task.id);
-  $deleteButton.setAttribute("id", `btn-${task.id}`);
 
   $deleteButton.addEventListener("click", () => deleteTaskHandler(task.id));
 
@@ -51,8 +50,8 @@ const createTasks = (taskContiner, tasks) => {
 
 const deleteTaskHandler = (taskId) => {
   taskId = parseInt(taskId);
-  tasks = tasks.filter((task) => taskId != task.id);
-  render(tasks);
+  tasks = tasks.filter((task) => taskId !== task.id);
+  render();
 };
 
 const addTaskHandler = () => {
