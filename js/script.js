@@ -28,11 +28,10 @@ const createForm = (taskInfo = {}) => {
   return $liElement;
 };
 
-const createTask = (task) => {
+const createTaskElement = (task) => {
   const $listElement = document.createElement("li");
   const $textContainer = document.createElement("span");
   const $deleteButton = document.createElement("button");
-
   $listElement.setAttribute("id", task.id);
   $deleteButton.setAttribute("id", `btn-${task.id}`);
 
@@ -45,9 +44,9 @@ const createTask = (task) => {
   return $listElement;
 };
 
-const renderTasks = (taskContiner, tasks) => {
+const createTasks = (taskContiner, tasks) => {
   tasks.map((task) => {
-    let element = createTask(task);
+    const element = createTaskElement(task);
     taskContiner.appendChild(element);
   });
 };
@@ -85,12 +84,10 @@ const toogleButton = () => {
 const render = (tasks) => {
   $taskContainer.innerHTML = "";
   if (isFormOpen) {
-    let form = createForm();
+    const form = createForm();
     $taskContainer.appendChild(form);
-    renderTasks($taskContainer, tasks);
-    return;
   }
-  renderTasks($taskContainer, tasks);
+  createTasks($taskContainer, tasks);
 };
 
 const showForm = () => {
