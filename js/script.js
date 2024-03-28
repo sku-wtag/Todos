@@ -6,7 +6,7 @@ let tasks = [];
 
 const createForm = (taskInfo = {}) => {
   const $liElement = document.createElement("li");
-  const $inputElement = document.createElement("input");
+  const $inputElement = document.createElement("textarea");
   const $addButton = document.createElement("button");
 
   $addButton.innerHTML = "Add";
@@ -15,6 +15,8 @@ const createForm = (taskInfo = {}) => {
   $inputElement.setAttribute("id", "title");
   $addButton.setAttribute("id", "add-task");
   $addButton.addEventListener("click", () => addTaskHandler());
+
+  $addButton.classList.add("add-button");
 
   if (taskInfo.title) {
     $title.value = taskInfo.title;
