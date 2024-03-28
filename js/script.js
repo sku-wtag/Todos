@@ -1,6 +1,6 @@
 import { $createButton, $taskContainer } from "./element.js";
 import { sanitizeInput, getUniqueId } from "./utlity.js";
-import { READ, EDIT } from "./const.js";
+import { READ, EDIT, DONE } from "./const.js";
 
 let isFormOpen = false;
 let tasks = [];
@@ -10,6 +10,7 @@ const editForm = (liElement, task) => {
   const $updateButton = document.createElement("button");
   const $cancelButton = document.createElement("button");
   const $deleteButton = document.createElement("button");
+  const $doneButton = document.createElement("button");
 
   $inputElement.setAttribute("id", `input-${task.id}`);
 
@@ -18,12 +19,20 @@ const editForm = (liElement, task) => {
   $deleteButton.innerText = "Delete";
   $updateButton.innerHTML = "Update";
   $cancelButton.innerHTML = "Cancel";
+  $doneButton.innerText = "Done";
 
   $deleteButton.addEventListener("click", () => deleteTaskHandler(task.id));
   $updateButton.addEventListener("click", () => updateTaskHandler(task.id));
   $cancelButton.addEventListener("click", () => calcelTaskHandler(task.id));
+  $doneButton.addEventListener("click", () => doneTaskHandler(task.id));
 
-  liElement.append($inputElement, $updateButton, $deleteButton, $cancelButton);
+  liElement.append(
+    $inputElement,
+    $updateButton,
+    $deleteButton,
+    $doneButton,
+    $cancelButton
+  );
 
   return liElement;
 };
@@ -57,17 +66,36 @@ const createTaskElement = (task) => {
     const $textContainer = document.createElement("span");
     const $editButton = document.createElement("button");
     const $deleteButton = document.createElement("button");
+    const $doneButton = document.createElement("button");
 
     $editButton.addEventListener("click", () => editTaskHandler(task.id));
     $deleteButton.addEventListener("click", () => deleteTaskHandler(task.id));
+    $doneButton.addEventListener("click", () => doneTaskHandler(task.id));
 
     $deleteButton.innerText = "Delete";
     $textContainer.innerText = task.title;
     $editButton.innerText = "Edit";
+    $doneButton.innerText = "Done";
 
-    $listElement.append($textContainer, $editButton, $deleteButton);
-  } else {
+    $listElement.append(
+      $textContainer,
+      $editButton,
+      $deleteButton,
+      $doneButton
+    );
+  } else if (task.mode == EDIT) {
     editForm($listElement, task);
+  } else {
+    const $textContainer = document.createElement("span");
+    const $deleteButton = document.createElement("button");
+
+    $deleteButton.addEventListener("click", () => deleteTaskHandler(task.id));
+
+    $deleteButton.innerText = "Delete";
+    $textContainer.innerText = task.title;
+    $textContainer.style.textDecoration = "line-through";
+
+    $listElement.append($textContainer, $deleteButton);
   }
 
   return $listElement;
@@ -99,6 +127,7 @@ const updateTaskHandler = (taskId) => {
 
 const editTaskHandler = (taskId) => {
   tasks.forEach((task) => {
+    if (task.mode == DONE) return;
     task.mode = READ;
     if (task.id === taskId) {
       task.mode = EDIT;
@@ -110,6 +139,15 @@ const editTaskHandler = (taskId) => {
 const calcelTaskHandler = (taskId) => {
   let task = tasks.find((task) => task.id === taskId);
   task.mode = READ;
+  render();
+};
+
+const doneTaskHandler = (taskId) => {
+  tasks.forEach((task) => {
+    if (task.id === taskId) {
+      task.mode = DONE;
+    }
+  });
   render();
 };
 
