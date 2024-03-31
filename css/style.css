@@ -1,0 +1,97 @@
+:root {
+    --var-white-color: #fff;
+    --var-violate-color: #F8F9FF;
+    --var-pink-color: #DDE2FF;
+    --var-blue-color25: #7A8DFD;
+}
+
+body{
+    font-weight: 400;
+    background-color: var(--var-violate-color);
+}
+
+*,
+*::after,
+*::before{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    margin: 0 auto; 
+    max-width: 62.5rem;
+    width: 100%;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.icon{
+    font-size: 2.3rem;
+    font-weight: 700;
+    color: var(--var-blue-color25);
+}
+.header {
+    margin-top: 2rem;
+}
+
+.navbar{
+    background-color: var(--var-white-color);
+    border-bottom: 0.1rem solid var(--var-pink-color);
+}
+
+.task-title{
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+button{
+    border-radius: 0.2rem;
+    border: 0.1rem solid rgb(226, 226, 226);
+    font-size: 1rem;
+}
+
+.create-button{
+    background-color:var(--var-blue-color25);
+    margin-top: 1rem;
+    color: var(--var-white-color);
+    padding: 0.2rem 0.5rem;
+}
+
+.task-wrapper{
+    margin-top: 2rem;
+}
+
+ul{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.2rem;
+    list-style: none;
+}
+
+li{
+    border: 0.1rem solid #c5c5c9;
+    padding: 0.4rem;
+    border-radius: 0.2rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.tasks{
+    list-style-type: none;
+    padding: 0.5rem 0rem;
+}
+
+textarea{
+    width: 100%;
+    padding: 0.4rem;
+}
+
+.add-button{
+    font-size: 1rem;
+    margin: 0.2rem 0.2rem 0.2rem 0rem;
+    padding: 0.2rem 0.4rem;
+}
