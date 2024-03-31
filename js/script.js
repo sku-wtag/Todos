@@ -31,8 +31,16 @@ const createForm = () => {
 
 const createTaskElement = (task) => {
   const $listElement = document.createElement("li");
+  const $textContainer = document.createElement("span");
+  const $deleteButton = document.createElement("button");
   $listElement.setAttribute("id", task.id);
-  $listElement.innerText = task.title;
+
+  $deleteButton.addEventListener("click", () => deleteTaskHandler(task.id));
+
+  $textContainer.innerText = task.title;
+  $deleteButton.innerText = "Delete";
+
+  $listElement.append($textContainer, $deleteButton);
   return $listElement;
 };
 
@@ -41,6 +49,12 @@ const createTasks = (taskContiner, tasks) => {
     const element = createTaskElement(task);
     taskContiner.appendChild(element);
   });
+};
+
+const deleteTaskHandler = (taskId) => {
+  taskId = parseInt(taskId);
+  tasks = tasks.filter((task) => taskId !== task.id);
+  render();
 };
 
 const addTaskHandler = () => {
