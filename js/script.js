@@ -4,26 +4,27 @@ import { sanitizeInput, getUniqueId } from "./utlity.js";
 let isFormOpen = false;
 let tasks = [];
 
-const createForm = (taskInfo = {}) => {
+const createForm = () => {
   const $liElement = document.createElement("li");
   const $inputElement = document.createElement("textarea");
   const $addButton = document.createElement("button");
+  const $cancelButton = document.createElement("button");
 
-  $addButton.innerHTML = "Add";
+  $addButton.innerHTML = "Add Task";
+  $cancelButton.innerText = "Cancel";
   $inputElement.setAttribute("name", "title");
   $inputElement.setAttribute("placeholder", "Enter your task name");
   $inputElement.setAttribute("id", "title");
   $addButton.setAttribute("id", "add-task");
   $addButton.addEventListener("click", () => addTaskHandler());
+  $cancelButton.addEventListener("click", () => {
+    toogleButton();
+    render();
+  });
 
   $addButton.classList.add("add-button");
 
-  if (taskInfo.title) {
-    $title.value = taskInfo.title;
-  }
-
-  $liElement.appendChild($inputElement);
-  $liElement.appendChild($addButton);
+  $liElement.append($inputElement, $addButton, $cancelButton);
 
   return $liElement;
 };
@@ -57,12 +58,9 @@ const addTaskHandler = () => {
 
 const toogleButton = () => {
   if (!isFormOpen) {
-    $createButton.innerText = "Hide form";
     isFormOpen = true;
     return;
   }
-
-  $createButton.innerText = "Create";
   isFormOpen = false;
 };
 
